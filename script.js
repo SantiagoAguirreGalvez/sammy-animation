@@ -1,5 +1,6 @@
 "use strict";
 gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(SplitText)
 
 // Function to dynamically generate and inject initial slide styles
 function generateSlideStyles(numberOfSlides) {
@@ -140,3 +141,46 @@ window.addEventListener("load", function () {
         });
     });
 });
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const splitText = document.querySelectorAll(".splitText");
+    const hiddenSlideCopy = document.querySelectorAll(".hiddenSlideCopy");
+    const slides = document.querySelectorAll(".slide"); 
+    splitText.forEach((text) => {
+        const split = new SplitText(text, {type: "chars"})
+        split.chars.forEach((char) => {
+            char.classList.add("letter");
+        })
+    })
+
+
+    slides.forEach((slide, index) => {
+        const letters = hiddenSlideCopy[index].querySelectorAll(".letter");
+        slide.addEventListener("mouseenter", () => {
+            gsap.to(letters, {
+                opacity: 1,
+                duration: 0.5,
+                ease: "power3.out",
+                stagger: {
+                    each: 0.02,
+                    from: "left"
+                }
+            });
+        })
+        slide.addEventListener("mouseleave", () => {
+            gsap.to(letters, {
+                opacity: 0,
+                duration: 0.5,
+                ease: "power3.out",
+                stagger: {
+                    each: 0.02,
+                    from: "left"
+                }
+            });
+        })
+    })
+})
+
+
+
